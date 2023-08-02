@@ -75,7 +75,7 @@ const promptInput = (question) => {
   });
 }
 
-async function main() {
+const main = async() => {
   while (true) {
     console.log('\nAvailable Facilities: ', Object.keys(facilities).join(', '));
     const facility = await promptInput('Enter the facility to book: ');
