@@ -16,10 +16,10 @@ const booking = {
 };
 
 const isSlotAvailable = (facility, startTime, endTime) => {
-  const bookedSlotsForFacility = booking[facility];
-  for (const slot of bookedSlotsForFacility) {
-    const [slotStart, slotEnd] = slot;
-    if (slotStart <= endTime && slotEnd >= startTime) {
+  const bookingFacility = booking[facility];
+  for (const slot of bookingFacility) {
+    const [start, end] = slot;
+    if (start <= endTime && end >= startTime) {
       return false;
     }
   }
@@ -31,8 +31,8 @@ const bookFacility = (facility, date, startTime, endTime) => {
     return 'Invalid Facility';
   }
 
-  const startTimeObj = new Date(`1970-01-01T${startTime}`);
-  const endTimeObj = new Date(`1970-01-01T${endTime}`);
+  const startTimeObj = new Date(`1990-01-01T${startTime}`);
+  const endTimeObj = new Date(`1990-01-01T${endTime}`);
 
   if (startTimeObj >= endTimeObj) {
     return 'Invalid Time Range';
@@ -50,8 +50,8 @@ const bookFacility = (facility, date, startTime, endTime) => {
 
   for (const [slotRange, amount] of Object.entries(facilities[facility])) {
     const [rangeStartStr, rangeEndStr] = slotRange.split('-');
-    const rangeStart = new Date(`1970-01-01T${rangeStartStr}`);
-    const rangeEnd = new Date(`1970-01-01T${rangeEndStr}`);
+    const rangeStart = new Date(`1990-01-01T${rangeStartStr}`);
+    const rangeEnd = new Date(`1990-01-01T${rangeEndStr}`);
 
     if (slotStart >= rangeStart && slotEnd <= rangeEnd) {
       const duration = (slotEnd - slotStart) / (1000 * 60 * 60);
@@ -67,7 +67,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const promptInput = (question) => {
+const takingInput = (question) => {
   return new Promise((resolve) => {
     rl.question(question, (answer) => {
       resolve(answer);
@@ -78,7 +78,7 @@ const promptInput = (question) => {
 const main = async() => {
   while (true) {
     console.log('\nAvailable Facilities: ', Object.keys(facilities).join(', '));
-    const facility = await promptInput('Enter the facility to book: ');
+    const facility = await takingInput('Enter the facility to book: ');
 
     if (facility === 'exit') {
       break;
@@ -89,9 +89,9 @@ const main = async() => {
       continue;
     }
 
-    const date = await promptInput('Enter the date (DD-MM-YYYY): ').trim();
-    const startTime = await promptInput('Enter the start time (HH:mm): ').trim();
-    const endTime = await promptInput('Enter the end time (HH:mm): ').trim();
+    const date = await takingInput('Enter the date (DD-MM-YYYY): ');
+    const startTime = await takingInput('Enter the start time (HH:mm): ');
+    const endTime = await takingInput('Enter the end time (HH:mm): ');
 
     const result = bookFacility(facility, date, startTime, endTime);
     console.log(result);
